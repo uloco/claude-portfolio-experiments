@@ -3,38 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Umut Topuzoğlu - v1</title>
+    <title>Umut Topuzoğlu - Interactive Canvas</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
-            font-family: system-ui, -apple-system, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
             background: #0a0a0a;
             color: #fafafa;
+            min-height: 100vh;
+            overflow: hidden;
+            cursor: crosshair;
         }
-        .container {
-            text-align: center;
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 0;
         }
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+
+        .content {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            pointer-events: none;
         }
-        p {
-            color: #888;
+
+        .name {
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            font-weight: 200;
+            letter-spacing: 0.02em;
+            margin-bottom: 0.5rem;
+            mix-blend-mode: difference;
+        }
+
+        .title {
+            font-size: clamp(0.875rem, 2vw, 1.25rem);
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            opacity: 0.7;
+            margin-bottom: 3rem;
+            mix-blend-mode: difference;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            max-width: 600px;
+            mix-blend-mode: difference;
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 2rem;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+
+        .hint {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            opacity: 0.3;
+            mix-blend-mode: difference;
+        }
+
+        .links {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 1.5rem;
+            pointer-events: all;
+            mix-blend-mode: difference;
+        }
+
+        .links a {
+            color: #fafafa;
+            text-decoration: none;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+
+        .links a:hover {
+            opacity: 1;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Umut Topuzoğlu</h1>
-        <p>Version 1 - Placeholder</p>
+    <canvas id="canvas"></canvas>
+
+    <nav class="links">
+        <a href="https://github.com/uloco" target="_blank">GitHub</a>
+        <a href="https://linkedin.com/in/umut-topuzoğlu-515a95116" target="_blank">LinkedIn</a>
+        <a href="https://instagram.com/schiefewelt" target="_blank">Art</a>
+    </nav>
+
+    <div class="content">
+        <h1 class="name">Umut Topuzoğlu</h1>
+        <p class="title">Software Engineer & Visual Artist</p>
+        <div class="tags">
+            <span class="tag">React</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">React Native</span>
+            <span class="tag">UI/UX</span>
+            <span class="tag">Paintings</span>
+            <span class="tag">Murals</span>
+        </div>
     </div>
+
+    <p class="hint">Move to paint</p>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let particles = [];
+        let hue = 0;
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        resize();
+        window.addEventListener('resize', resize);
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 30 + 10;
+                this.speedX = Math.random() * 2 - 1;
+                this.speedY = Math.random() * 2 - 1;
+                this.life = 1;
+                this.decay = Math.random() * 0.01 + 0.005;
+                this.hue = hue;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.life -= this.decay;
+                this.size *= 0.99;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.life * 0.6;
+                ctx.fillStyle = `hsl(${this.hue}, 70%, 60%)`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        let lastX = 0, lastY = 0;
+
+        function handleMove(e) {
+            const x = e.clientX || (e.touches && e.touches[0].clientX);
+            const y = e.clientY || (e.touches && e.touches[0].clientY);
+
+            if (!x || !y) return;
+
+            const dx = x - lastX;
+            const dy = y - lastY;
+            const speed = Math.sqrt(dx * dx + dy * dy);
+
+            const count = Math.min(Math.floor(speed / 5) + 1, 5);
+
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle(x, y));
+            }
+
+            hue = (hue + 0.5) % 360;
+            lastX = x;
+            lastY = y;
+        }
+
+        window.addEventListener('mousemove', handleMove);
+        window.addEventListener('touchmove', handleMove);
+
+        // Fade effect
+        function fade() {
+            ctx.fillStyle = 'rgba(10, 10, 10, 0.03)';
+            ctx.fillRect(0, 0, width, height);
+        }
+
+        function animate() {
+            fade();
+
+            particles = particles.filter(p => p.life > 0);
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        // Initial paint burst
+        setTimeout(() => {
+            for (let i = 0; i < 50; i++) {
+                const x = width / 2 + (Math.random() - 0.5) * 200;
+                const y = height / 2 + (Math.random() - 0.5) * 200;
+                particles.push(new Particle(x, y));
+                hue = (hue + 5) % 360;
+            }
+        }, 500);
+    </script>
 </body>
 </html>

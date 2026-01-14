@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Umut Topuzoğlu - Kinetic</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #0a0a0a;
+            --white: #fafafa;
+            --gray: #666;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+        }
+
+        /* Marquee Styles */
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 1rem 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .marquee {
+            display: inline-block;
+            animation: marquee var(--duration, 20s) linear infinite;
+        }
+
+        .marquee-reverse {
+            animation-direction: reverse;
+        }
+
+        @keyframes marquee {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        .marquee-text {
+            display: inline-block;
+            font-size: clamp(1rem, 3vw, 2rem);
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            padding: 0 2rem;
+        }
+
+        .marquee-text span {
+            opacity: 0.3;
+            margin: 0 1rem;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 2rem;
+        }
+
+        .hero-name {
+            font-size: clamp(3rem, 12vw, 10rem);
+            font-weight: 100;
+            letter-spacing: -0.02em;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero-name .word {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(100%);
+            animation: slideUp 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .hero-name .word:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-title {
+            margin-top: 2rem;
+            font-size: 1rem;
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards 0.6s;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 0.6; }
+        }
+
+        /* Floating Words */
+        .floating-words {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .float-word {
+            position: absolute;
+            font-size: clamp(0.75rem, 1.5vw, 1rem);
+            font-weight: 300;
+            opacity: 0.15;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(10px, -20px) rotate(2deg); }
+            50% { transform: translate(-5px, 10px) rotate(-1deg); }
+            75% { transform: translate(15px, 5px) rotate(1deg); }
+        }
+
+        /* Stats Section */
+        .stats {
+            padding: 8rem 2rem;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 4rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .stat {
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        .stat:nth-child(1) { animation-delay: 0.1s; }
+        .stat:nth-child(2) { animation-delay: 0.2s; }
+        .stat:nth-child(3) { animation-delay: 0.3s; }
+        .stat:nth-child(4) { animation-delay: 0.4s; }
+
+        .stat-number {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 100;
+            line-height: 1;
+            background: linear-gradient(135deg, var(--white) 0%, var(--gray) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            opacity: 0.5;
+            margin-top: 0.5rem;
+        }
+
+        /* Skills Scroll */
+        .skills-section {
+            padding: 4rem 0;
+        }
+
+        .skill-marquee {
+            font-size: clamp(2rem, 6vw, 5rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            --duration: 30s;
+        }
+
+        .skill-marquee .marquee-text {
+            padding: 0 1rem;
+        }
+
+        .skill-marquee .marquee-text span {
+            color: var(--gray);
+            opacity: 0.3;
+        }
+
+        .skill-marquee:nth-child(odd) {
+            color: transparent;
+            -webkit-text-stroke: 1px var(--white);
+        }
+
+        /* About */
+        .about {
+            padding: 8rem 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .about-text {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-weight: 200;
+            line-height: 1.6;
+        }
+
+        .about-text .highlight {
+            font-weight: 500;
+            color: var(--white);
+        }
+
+        .about-text .dim {
+            opacity: 0.4;
+        }
+
+        /* Links Section */
+        .links-section {
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+
+        .links-grid {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .link-item {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 1rem 2rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .link-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--white);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .link-item:hover {
+            color: var(--black);
+        }
+
+        .link-item:hover::before {
+            left: 0;
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem 2rem;
+            text-align: center;
+            opacity: 0.3;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+        }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <div class="floating-words">
+            <span class="float-word" style="top: 15%; left: 10%; animation-delay: 0s;">React</span>
+            <span class="float-word" style="top: 25%; right: 15%; animation-delay: 2s;">TypeScript</span>
+            <span class="float-word" style="top: 60%; left: 8%; animation-delay: 4s;">Canvas</span>
+            <span class="float-word" style="top: 70%; right: 10%; animation-delay: 6s;">Murals</span>
+            <span class="float-word" style="top: 40%; left: 20%; animation-delay: 8s;">UI/UX</span>
+            <span class="float-word" style="top: 80%; left: 25%; animation-delay: 10s;">Mobile</span>
+            <span class="float-word" style="top: 20%; left: 70%; animation-delay: 12s;">Design</span>
+        </div>
+
+        <h1 class="hero-name">
+            <span class="word">Umut</span>
+            <span class="word">Topuzoğlu</span>
+        </h1>
+        <p class="hero-title">Engineer / Artist / Munich</p>
+    </section>
+
+    <div class="marquee-container">
+        <div class="marquee">
+            <span class="marquee-text">Software Engineer <span>—</span> Visual Artist <span>—</span> Creative Developer <span>—</span> UI/UX Designer <span>—</span> Software Engineer <span>—</span> Visual Artist <span>—</span> Creative Developer <span>—</span> UI/UX Designer <span>—</span></span>
+        </div>
+    </div>
+
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat">
+                <div class="stat-number">10+</div>
+                <div class="stat-label">Years Experience</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Languages</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">∞</div>
+                <div class="stat-label">Curiosity</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">2</div>
+                <div class="stat-label">Worlds</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="skills-section">
+        <div class="marquee-container skill-marquee" style="border: none;">
+            <div class="marquee" style="--duration: 25s;">
+                <span class="marquee-text">React <span>•</span> TypeScript <span>•</span> React Native <span>•</span> Next.js <span>•</span> Node.js <span>•</span> React <span>•</span> TypeScript <span>•</span> React Native <span>•</span> Next.js <span>•</span> Node.js <span>•</span></span>
+            </div>
+        </div>
+        <div class="marquee-container skill-marquee" style="border: none;">
+            <div class="marquee marquee-reverse" style="--duration: 20s;">
+                <span class="marquee-text">Paintings <span>•</span> Murals <span>•</span> Canvas <span>•</span> Schiefewelt <span>•</span> Paintings <span>•</span> Murals <span>•</span> Canvas <span>•</span> Schiefewelt <span>•</span></span>
+            </div>
+        </div>
+        <div class="marquee-container skill-marquee" style="border: none;">
+            <div class="marquee" style="--duration: 35s;">
+                <span class="marquee-text">Firebase <span>•</span> GraphQL <span>•</span> Docker <span>•</span> Figma <span>•</span> Animation <span>•</span> Firebase <span>•</span> GraphQL <span>•</span> Docker <span>•</span> Figma <span>•</span> Animation <span>•</span></span>
+            </div>
+        </div>
+    </section>
+
+    <section class="about">
+        <p class="about-text">
+            <span class="highlight">Lead Software Engineer</span> <span class="dim">building</span> interactive experiences <span class="dim">and</span> <span class="highlight">Visual Artist</span> <span class="dim">exploring</span> tilted perspectives. <span class="dim">Where</span> code meets canvas, <span class="dim">and</span> pixels meet pigment.
+        </p>
+    </section>
+
+    <div class="marquee-container" style="--duration: 15s;">
+        <div class="marquee marquee-reverse">
+            <span class="marquee-text">Schiefewelt <span>—</span> A Crooked World <span>—</span> Schiefewelt <span>—</span> A Crooked World <span>—</span> Schiefewelt <span>—</span> A Crooked World <span>—</span> Schiefewelt <span>—</span> A Crooked World <span>—</span></span>
+        </div>
+    </div>
+
+    <section class="links-section">
+        <div class="links-grid">
+            <a href="https://github.com/uloco" class="link-item" target="_blank">GitHub</a>
+            <a href="https://linkedin.com/in/umut-topuzoğlu-515a95116" class="link-item" target="_blank">LinkedIn</a>
+            <a href="https://instagram.com/schiefewelt" class="link-item" target="_blank">Instagram</a>
+            <a href="mailto:hello@topuzoglu.de" class="link-item">Email</a>
+        </div>
+    </section>
+
+    <footer>
+        Umut Topuzoğlu — Munich, Germany
+    </footer>
+</body>
+</html>

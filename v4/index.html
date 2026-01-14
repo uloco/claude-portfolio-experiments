@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Umut Topuzoğlu - Schiefewelt</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --rotate: -3deg;
+            --bg: #f5f0e8;
+            --fg: #1a1a1a;
+            --accent: #e63946;
+            --secondary: #457b9d;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Everything is slightly tilted */
+        .tilted {
+            transform: rotate(var(--rotate));
+            transform-origin: center center;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 2rem;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+        }
+
+        .name {
+            font-size: clamp(4rem, 15vw, 12rem);
+            font-weight: 900;
+            line-height: 0.9;
+            letter-spacing: -0.03em;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .name span {
+            display: block;
+        }
+
+        .name .first {
+            transform: rotate(2deg) translateX(-20px);
+            color: var(--accent);
+        }
+
+        .name .last {
+            transform: rotate(-4deg) translateX(30px);
+            color: var(--secondary);
+        }
+
+        .tagline {
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            font-weight: 300;
+            transform: rotate(1deg);
+            opacity: 0.7;
+            margin-bottom: 3rem;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%) rotate(var(--rotate));
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            opacity: 0.4;
+        }
+
+        .scroll-hint::after {
+            content: '';
+            display: block;
+            width: 1px;
+            height: 40px;
+            background: var(--fg);
+            margin: 1rem auto 0;
+            animation: scroll 2s ease-in-out infinite;
+        }
+
+        @keyframes scroll {
+            0%, 100% { transform: scaleY(1); opacity: 0.4; }
+            50% { transform: scaleY(1.5); opacity: 1; }
+        }
+
+        /* Sections */
+        section {
+            padding: 8rem 2rem;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 6vw, 4rem);
+            font-weight: 900;
+            margin-bottom: 3rem;
+            transform: rotate(calc(var(--rotate) * -1));
+        }
+
+        /* About */
+        .about {
+            background: var(--fg);
+            color: var(--bg);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .about-card {
+            padding: 2rem;
+            border: 2px solid var(--bg);
+            transform: rotate(calc(var(--rotate) * var(--card-rotate, 1)));
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .about-card:nth-child(1) { --card-rotate: 0.5; }
+        .about-card:nth-child(2) { --card-rotate: -0.8; }
+        .about-card:nth-child(3) { --card-rotate: 1.2; }
+
+        .about-card:hover {
+            transform: rotate(0deg) scale(1.02);
+        }
+
+        .about-card h3 {
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            opacity: 0.5;
+            margin-bottom: 1rem;
+        }
+
+        .about-card p {
+            font-size: 1.25rem;
+            line-height: 1.6;
+        }
+
+        /* Skills */
+        .skills-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .skill-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            transform: rotate(calc(var(--rotate) * var(--row-tilt)));
+        }
+
+        .skill-row:nth-child(1) { --row-tilt: 0.3; }
+        .skill-row:nth-child(2) { --row-tilt: -0.5; justify-content: flex-end; }
+        .skill-row:nth-child(3) { --row-tilt: 0.8; justify-content: center; }
+        .skill-row:nth-child(4) { --row-tilt: -0.2; }
+
+        .skill {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            font-weight: 700;
+            padding: 0.75rem 1.5rem;
+            background: var(--fg);
+            color: var(--bg);
+            transition: all 0.3s;
+        }
+
+        .skill:hover {
+            background: var(--accent);
+            transform: rotate(0deg) scale(1.1);
+        }
+
+        /* Art Section */
+        .art {
+            background: var(--accent);
+            color: white;
+            text-align: center;
+        }
+
+        .art .section-title {
+            color: white;
+        }
+
+        .art-quote {
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            font-weight: 300;
+            font-style: italic;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.4;
+            transform: rotate(1deg);
+        }
+
+        .art-link {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            padding: 1rem 2rem;
+            border: 2px solid white;
+            transform: rotate(-2deg);
+            transition: all 0.3s;
+        }
+
+        .art-link:hover {
+            background: white;
+            color: var(--accent);
+            transform: rotate(0deg);
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--fg);
+            text-decoration: none;
+            font-size: 0.875rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transform: rotate(calc(var(--rotate) * var(--link-tilt, 1)));
+            display: inline-block;
+            transition: all 0.3s;
+        }
+
+        .footer-links a:nth-child(1) { --link-tilt: 0.5; }
+        .footer-links a:nth-child(2) { --link-tilt: -1; }
+        .footer-links a:nth-child(3) { --link-tilt: 0.8; }
+        .footer-links a:nth-child(4) { --link-tilt: -0.3; }
+
+        .footer-links a:hover {
+            color: var(--accent);
+            transform: rotate(0deg);
+        }
+
+        .copyright {
+            font-size: 0.75rem;
+            opacity: 0.5;
+            transform: rotate(var(--rotate));
+        }
+
+        /* Decorative elements */
+        .deco {
+            position: fixed;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .deco-1 {
+            top: 10%;
+            right: 5%;
+            width: 200px;
+            height: 200px;
+            border: 3px solid var(--accent);
+            transform: rotate(25deg);
+            opacity: 0.2;
+        }
+
+        .deco-2 {
+            bottom: 20%;
+            left: 3%;
+            width: 150px;
+            height: 150px;
+            background: var(--secondary);
+            transform: rotate(-15deg);
+            opacity: 0.1;
+        }
+    </style>
+</head>
+<body>
+    <div class="deco deco-1"></div>
+    <div class="deco deco-2"></div>
+
+    <section class="hero">
+        <div class="hero-content tilted">
+            <h1 class="name">
+                <span class="first">Umut</span>
+                <span class="last">Topuzoğlu</span>
+            </h1>
+            <p class="tagline">Software Engineer & Visual Artist — Munich</p>
+        </div>
+        <p class="scroll-hint">Scroll</p>
+    </section>
+
+    <section class="about">
+        <h2 class="section-title">Schiefewelt</h2>
+        <div class="about-grid">
+            <div class="about-card">
+                <h3>Philosophy</h3>
+                <p>A tilted perspective on the world. Where straight lines feel wrong and crooked views reveal truth.</p>
+            </div>
+            <div class="about-card">
+                <h3>Code</h3>
+                <p>10+ years crafting interactive experiences. React, TypeScript, React Native. User experience at the center.</p>
+            </div>
+            <div class="about-card">
+                <h3>Art</h3>
+                <p>Paintings and murals that challenge perception. Canvas and walls as portals to alternate realities.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="skills">
+        <h2 class="section-title">Stack</h2>
+        <div class="skills-container">
+            <div class="skill-row">
+                <span class="skill">React</span>
+                <span class="skill">TypeScript</span>
+                <span class="skill">Next.js</span>
+            </div>
+            <div class="skill-row">
+                <span class="skill">React Native</span>
+                <span class="skill">Expo</span>
+                <span class="skill">Node.js</span>
+            </div>
+            <div class="skill-row">
+                <span class="skill">UI/UX</span>
+                <span class="skill">Figma</span>
+                <span class="skill">Animation</span>
+            </div>
+            <div class="skill-row">
+                <span class="skill">Firebase</span>
+                <span class="skill">GraphQL</span>
+                <span class="skill">Docker</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="art">
+        <h2 class="section-title tilted">The Crooked World</h2>
+        <p class="art-quote">"Reality is just a canvas waiting to be tilted."</p>
+        <a href="https://instagram.com/schiefewelt" class="art-link" target="_blank">View Artwork</a>
+    </section>
+
+    <footer>
+        <div class="footer-links">
+            <a href="https://github.com/uloco" target="_blank">GitHub</a>
+            <a href="https://linkedin.com/in/umut-topuzoğlu-515a95116" target="_blank">LinkedIn</a>
+            <a href="https://instagram.com/schiefewelt" target="_blank">Instagram</a>
+            <a href="mailto:hello@topuzoglu.de">Email</a>
+        </div>
+        <p class="copyright">Schiefewelt — Umut Topuzoğlu</p>
+    </footer>
+</body>
+</html>

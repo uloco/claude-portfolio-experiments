@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Umut Topuzoğlu - Dual Identity</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .side {
+            flex: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem;
+            position: relative;
+            overflow: hidden;
+            transition: flex 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .side:hover {
+            flex: 1.2;
+        }
+
+        /* Engineer Side */
+        .engineer {
+            background: #0d1117;
+            color: #e6edf3;
+        }
+
+        .engineer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                linear-gradient(90deg, transparent 49.5%, rgba(48, 54, 61, 0.3) 49.5%, rgba(48, 54, 61, 0.3) 50.5%, transparent 50.5%),
+                linear-gradient(0deg, transparent 49.5%, rgba(48, 54, 61, 0.3) 49.5%, rgba(48, 54, 61, 0.3) 50.5%, transparent 50.5%);
+            background-size: 60px 60px;
+            opacity: 0.5;
+        }
+
+        /* Artist Side */
+        .artist {
+            background: linear-gradient(135deg, #fef3e2 0%, #fde8d0 50%, #fce4c4 100%);
+            color: #2d2a26;
+        }
+
+        .artist::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            right: -50%;
+            bottom: -50%;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(255, 107, 107, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(78, 205, 196, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(255, 230, 109, 0.1) 0%, transparent 50%);
+            animation: colorShift 20s ease-in-out infinite;
+        }
+
+        @keyframes colorShift {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            max-width: 400px;
+        }
+
+        .label {
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            opacity: 0.5;
+            margin-bottom: 1rem;
+        }
+
+        .title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .engineer .title {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-weight: 400;
+        }
+
+        .artist .title {
+            font-weight: 200;
+            font-style: italic;
+        }
+
+        .description {
+            font-size: 1rem;
+            line-height: 1.8;
+            opacity: 0.8;
+            margin-bottom: 2rem;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .skill {
+            font-size: 0.75rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 2rem;
+            letter-spacing: 0.05em;
+        }
+
+        .engineer .skill {
+            background: rgba(136, 198, 190, 0.15);
+            color: #88c6be;
+            border: 1px solid rgba(136, 198, 190, 0.3);
+        }
+
+        .artist .skill {
+            background: rgba(45, 42, 38, 0.08);
+            color: #5a534b;
+            border: 1px solid rgba(45, 42, 38, 0.2);
+        }
+
+        /* Center Divider */
+        .divider {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 100;
+            text-align: center;
+        }
+
+        .divider-line {
+            width: 1px;
+            height: 120px;
+            background: linear-gradient(to bottom, transparent, #888, transparent);
+            margin: 0 auto 1.5rem;
+        }
+
+        .name {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #666;
+            background: rgba(255,255,255,0.9);
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+            white-space: nowrap;
+        }
+
+        .links {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 2rem;
+            z-index: 100;
+        }
+
+        .links a {
+            color: #666;
+            text-decoration: none;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        .links a:hover {
+            color: #000;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .side {
+                min-height: 50vh;
+                padding: 3rem 2rem;
+            }
+
+            .side:hover {
+                flex: 1;
+            }
+
+            .divider {
+                position: relative;
+                top: auto;
+                left: auto;
+                transform: none;
+                padding: 2rem 0;
+                background: linear-gradient(90deg, #0d1117 50%, #fef3e2 50%);
+            }
+
+            .divider-line {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="side engineer">
+            <div class="content">
+                <p class="label">The Engineer</p>
+                <h2 class="title">&lt;code/&gt;</h2>
+                <p class="description">
+                    10+ years building interactive experiences.
+                    Specializing in React, TypeScript, and mobile development.
+                    Clean code. User-centered design. Functional thinking.
+                </p>
+                <div class="skills">
+                    <span class="skill">React</span>
+                    <span class="skill">TypeScript</span>
+                    <span class="skill">React Native</span>
+                    <span class="skill">Next.js</span>
+                    <span class="skill">Node.js</span>
+                    <span class="skill">UI/UX</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="side artist">
+            <div class="content">
+                <p class="label">The Artist</p>
+                <h2 class="title">Schiefewelt</h2>
+                <p class="description">
+                    A tilted perspective on the world.
+                    Paintings that question reality.
+                    Murals that transform space.
+                    Where intuition meets intention.
+                </p>
+                <div class="skills">
+                    <span class="skill">Paintings</span>
+                    <span class="skill">Murals</span>
+                    <span class="skill">Canvas</span>
+                    <span class="skill">Mixed Media</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="divider">
+        <div class="divider-line"></div>
+        <div class="name">Umut Topuzoğlu</div>
+    </div>
+
+    <nav class="links">
+        <a href="https://github.com/uloco">GitHub</a>
+        <a href="https://linkedin.com/in/umut-topuzoğlu-515a95116">LinkedIn</a>
+        <a href="https://instagram.com/schiefewelt">Art</a>
+        <a href="mailto:hello@topuzoglu.de">Contact</a>
+    </nav>
+</body>
+</html>

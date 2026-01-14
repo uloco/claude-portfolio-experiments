@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Umut Topuzoğlu - Code Poetry</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #1a1b26;
+            --fg: #a9b1d6;
+            --comment: #565f89;
+            --keyword: #bb9af7;
+            --string: #9ece6a;
+            --function: #7aa2f7;
+            --variable: #e0af68;
+            --constant: #ff9e64;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg);
+            color: var(--fg);
+            min-height: 100vh;
+            padding: 2rem;
+            line-height: 1.7;
+            font-size: clamp(0.75rem, 1.5vw, 1rem);
+        }
+
+        .editor {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .line {
+            display: flex;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .line-number {
+            color: var(--comment);
+            width: 3rem;
+            text-align: right;
+            padding-right: 1.5rem;
+            user-select: none;
+            flex-shrink: 0;
+        }
+
+        .line-content {
+            flex: 1;
+        }
+
+        .keyword { color: var(--keyword); }
+        .string { color: var(--string); }
+        .function { color: var(--function); }
+        .variable { color: var(--variable); }
+        .constant { color: var(--constant); }
+        .comment { color: var(--comment); font-style: italic; }
+
+        .indent-1 { padding-left: 2rem; }
+        .indent-2 { padding-left: 4rem; }
+        .indent-3 { padding-left: 6rem; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 0.6em;
+            height: 1.2em;
+            background: var(--fg);
+            animation: blink 1s infinite;
+            vertical-align: text-bottom;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .links {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--comment);
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+            animation-delay: 3s;
+        }
+
+        .links a {
+            color: var(--function);
+            text-decoration: none;
+            margin-right: 2rem;
+            transition: color 0.2s;
+        }
+
+        .links a:hover {
+            color: var(--keyword);
+        }
+
+        .tab-bar {
+            display: flex;
+            gap: 0;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--comment);
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: none;
+            color: var(--comment);
+            font-family: inherit;
+            font-size: inherit;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            transition: all 0.2s;
+        }
+
+        .tab:hover {
+            color: var(--fg);
+        }
+
+        .tab.active {
+            color: var(--fg);
+            border-bottom-color: var(--keyword);
+        }
+
+        .file-content {
+            display: none;
+        }
+
+        .file-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="editor">
+        <div class="tab-bar">
+            <button class="tab active" data-file="about">about.ts</button>
+            <button class="tab" data-file="skills">skills.ts</button>
+            <button class="tab" data-file="art">art.ts</button>
+        </div>
+
+        <div id="about" class="file-content active">
+            <div class="line" style="animation-delay: 0.1s">
+                <span class="line-number">1</span>
+                <span class="line-content"><span class="comment">/**</span></span>
+            </div>
+            <div class="line" style="animation-delay: 0.15s">
+                <span class="line-number">2</span>
+                <span class="line-content"><span class="comment"> * Umut Topuzoğlu</span></span>
+            </div>
+            <div class="line" style="animation-delay: 0.2s">
+                <span class="line-number">3</span>
+                <span class="line-content"><span class="comment"> * Lead Software Engineer & Visual Artist</span></span>
+            </div>
+            <div class="line" style="animation-delay: 0.25s">
+                <span class="line-number">4</span>
+                <span class="line-content"><span class="comment"> * Munich, Germany</span></span>
+            </div>
+            <div class="line" style="animation-delay: 0.3s">
+                <span class="line-number">5</span>
+                <span class="line-content"><span class="comment"> */</span></span>
+            </div>
+            <div class="line" style="animation-delay: 0.35s">
+                <span class="line-number">6</span>
+                <span class="line-content"></span>
+            </div>
+            <div class="line" style="animation-delay: 0.4s">
+                <span class="line-number">7</span>
+                <span class="line-content"><span class="keyword">const</span> <span class="variable">umut</span> = {</span>
+            </div>
+            <div class="line" style="animation-delay: 0.45s">
+                <span class="line-number">8</span>
+                <span class="line-content indent-1"><span class="function">role</span>: <span class="string">"Lead Software Engineer"</span>,</span>
+            </div>
+            <div class="line" style="animation-delay: 0.5s">
+                <span class="line-number">9</span>
+                <span class="line-content indent-1"><span class="function">focus</span>: <span class="string">"UI/UX Development & Design"</span>,</span>
+            </div>
+            <div class="line" style="animation-delay: 0.55s">
+                <span class="line-number">10</span>
+                <span class="line-content indent-1"><span class="function">experience</span>: <span class="constant">10</span>,</span>
+            </div>
+            <div class="line" style="animation-delay: 0.6s">
+                <span class="line-number">11</span>
+                <span class="line-content indent-1"><span class="function">location</span>: <span class="string">"Munich"</span>,</span>
+            </div>
+            <div class="line" style="animation-delay: 0.65s">
+                <span class="line-number">12</span>
+                <span class="line-content indent-1"><span class="function">languages</span>: [<span class="string">"German"</span>, <span class="string">"English"</span>, <span class="string">"Turkish"</span>],</span>
+            </div>
+            <div class="line" style="animation-delay: 0.7s">
+                <span class="line-number">13</span>
+                <span class="line-content indent-1"><span class="function">passion</span>: <span class="string">"Bridging technology and art"</span>,</span>
+            </div>
+            <div class="line" style="animation-delay: 0.75s">
+                <span class="line-number">14</span>
+                <span class="line-content">};</span>
+            </div>
+            <div class="line" style="animation-delay: 0.8s">
+                <span class="line-number">15</span>
+                <span class="line-content"></span>
+            </div>
+            <div class="line" style="animation-delay: 0.85s">
+                <span class="line-number">16</span>
+                <span class="line-content"><span class="keyword">export default</span> <span class="variable">umut</span>;<span class="cursor"></span></span>
+            </div>
+        </div>
+
+        <div id="skills" class="file-content">
+            <div class="line"><span class="line-number">1</span><span class="line-content"><span class="keyword">import</span> { <span class="variable">Stack</span> } <span class="keyword">from</span> <span class="string">"@skills"</span>;</span></div>
+            <div class="line"><span class="line-number">2</span><span class="line-content"></span></div>
+            <div class="line"><span class="line-number">3</span><span class="line-content"><span class="keyword">const</span> <span class="variable">frontend</span>: <span class="function">Stack</span> = {</span></div>
+            <div class="line"><span class="line-number">4</span><span class="line-content indent-1"><span class="function">core</span>: [<span class="string">"TypeScript"</span>, <span class="string">"React"</span>, <span class="string">"Next.js"</span>],</span></div>
+            <div class="line"><span class="line-number">5</span><span class="line-content indent-1"><span class="function">styling</span>: [<span class="string">"Tailwind"</span>, <span class="string">"CSS"</span>, <span class="string">"Styled Components"</span>],</span></div>
+            <div class="line"><span class="line-number">6</span><span class="line-content indent-1"><span class="function">state</span>: [<span class="string">"Redux"</span>, <span class="string">"Zustand"</span>],</span></div>
+            <div class="line"><span class="line-number">7</span><span class="line-content">};</span></div>
+            <div class="line"><span class="line-number">8</span><span class="line-content"></span></div>
+            <div class="line"><span class="line-number">9</span><span class="line-content"><span class="keyword">const</span> <span class="variable">mobile</span>: <span class="function">Stack</span> = {</span></div>
+            <div class="line"><span class="line-number">10</span><span class="line-content indent-1"><span class="function">framework</span>: [<span class="string">"React Native"</span>, <span class="string">"Expo"</span>],</span></div>
+            <div class="line"><span class="line-number">11</span><span class="line-content indent-1"><span class="function">testing</span>: [<span class="string">"Jest"</span>, <span class="string">"Detox"</span>],</span></div>
+            <div class="line"><span class="line-number">12</span><span class="line-content">};</span></div>
+            <div class="line"><span class="line-number">13</span><span class="line-content"></span></div>
+            <div class="line"><span class="line-number">14</span><span class="line-content"><span class="keyword">const</span> <span class="variable">backend</span>: <span class="function">Stack</span> = {</span></div>
+            <div class="line"><span class="line-number">15</span><span class="line-content indent-1"><span class="function">runtime</span>: [<span class="string">"Node.js"</span>, <span class="string">"Express"</span>],</span></div>
+            <div class="line"><span class="line-number">16</span><span class="line-content indent-1"><span class="function">database</span>: [<span class="string">"Firebase"</span>, <span class="string">"GraphQL"</span>],</span></div>
+            <div class="line"><span class="line-number">17</span><span class="line-content indent-1"><span class="function">devops</span>: [<span class="string">"Docker"</span>, <span class="string">"CI/CD"</span>],</span></div>
+            <div class="line"><span class="line-number">18</span><span class="line-content">};</span></div>
+            <div class="line"><span class="line-number">19</span><span class="line-content"></span></div>
+            <div class="line"><span class="line-number">20</span><span class="line-content"><span class="keyword">export</span> { <span class="variable">frontend</span>, <span class="variable">mobile</span>, <span class="variable">backend</span> };<span class="cursor"></span></span></div>
+        </div>
+
+        <div id="art" class="file-content">
+            <div class="line"><span class="line-number">1</span><span class="line-content"><span class="comment">// Schiefewelt - "Crooked World"</span></span></div>
+            <div class="line"><span class="line-number">2</span><span class="line-content"><span class="comment">// A tilted perspective on reality</span></span></div>
+            <div class="line"><span class="line-number">3</span><span class="line-content"></span></div>
+            <div class="line"><span class="line-number">4</span><span class="line-content"><span class="keyword">interface</span> <span class="function">ArtPractice</span> {</span></div>
+            <div class="line"><span class="line-number">5</span><span class="line-content indent-1"><span class="variable">medium</span>: <span class="string">"canvas"</span> | <span class="string">"wall"</span> | <span class="string">"digital"</span>;</span></div>
+            <div class="line"><span class="line-number">6</span><span class="line-content indent-1"><span class="variable">scale</span>: <span class="string">"intimate"</span> | <span class="string">"mural"</span>;</span></div>
+            <div class="line"><span class="line-number">7</span><span class="line-content indent-1"><span class="variable">perspective</span>: <span class="string">"tilted"</span>;</span></div>
+            <div class="line"><span class="line-number">8</span><span class="line-content">}</span></div>
+            <div class="line"><span class="line-number">9</span><span class="line-content"></span></div>
+            <div class="line"><span class="line-number">10</span><span class="line-content"><span class="keyword">const</span> <span class="variable">schiefewelt</span>: <span class="function">ArtPractice</span>[] = [</span></div>
+            <div class="line"><span class="line-number">11</span><span class="line-content indent-1">{ <span class="function">medium</span>: <span class="string">"canvas"</span>, <span class="function">scale</span>: <span class="string">"intimate"</span>, <span class="function">perspective</span>: <span class="string">"tilted"</span> },</span></div>
+            <div class="line"><span class="line-number">12</span><span class="line-content indent-1">{ <span class="function">medium</span>: <span class="string">"wall"</span>, <span class="function">scale</span>: <span class="string">"mural"</span>, <span class="function">perspective</span>: <span class="string">"tilted"</span> },</span></div>
+            <div class="line"><span class="line-number">13</span><span class="line-content">];</span></div>
+            <div class="line"><span class="line-number">14</span><span class="line-content"></span></div>
+            <div class="line"><span class="line-number">15</span><span class="line-content"><span class="comment">// Where code meets canvas,</span></span></div>
+            <div class="line"><span class="line-number">16</span><span class="line-content"><span class="comment">// logic meets intuition,</span></span></div>
+            <div class="line"><span class="line-number">17</span><span class="line-content"><span class="comment">// pixels meet pigment.</span></span></div>
+            <div class="line"><span class="line-number">18</span><span class="line-content"></span></div>
+            <div class="line"><span class="line-number">19</span><span class="line-content"><span class="keyword">export</span> { <span class="variable">schiefewelt</span> };<span class="cursor"></span></span></div>
+        </div>
+
+        <div class="links">
+            <a href="https://github.com/uloco">github</a>
+            <a href="https://linkedin.com/in/umut-topuzoğlu-515a95116">linkedin</a>
+            <a href="https://instagram.com/schiefewelt">instagram</a>
+            <a href="mailto:hello@topuzoglu.de">email</a>
+        </div>
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('.tab');
+        const files = document.querySelectorAll('.file-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const fileId = tab.dataset.file;
+
+                tabs.forEach(t => t.classList.remove('active'));
+                files.forEach(f => f.classList.remove('active'));
+
+                tab.classList.add('active');
+                document.getElementById(fileId).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
