@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Umut Topuzoğlu - 3D Cards</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #fff;
+            min-height: 100vh;
+            perspective: 1000px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 6rem;
+            transform-style: preserve-3d;
+        }
+
+        .name {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff 0%, #a8dadc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .title {
+            font-size: 1.125rem;
+            font-weight: 300;
+            opacity: 0.7;
+            letter-spacing: 0.1em;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            transform-style: preserve-3d;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card:hover {
+            transform: translateZ(50px) rotateX(5deg) rotateY(-5deg);
+            box-shadow:
+                0 25px 50px rgba(0, 0, 0, 0.3),
+                0 0 100px rgba(168, 218, 220, 0.1);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            opacity: 0.7;
+        }
+
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            padding: 0.4rem 0.8rem;
+            background: rgba(168, 218, 220, 0.15);
+            border-radius: 20px;
+            color: #a8dadc;
+        }
+
+        /* Card accents */
+        .card-engineer { border-top: 3px solid #4facfe; }
+        .card-mobile { border-top: 3px solid #43e97b; }
+        .card-art { border-top: 3px solid #f5576c; }
+        .card-ux { border-top: 3px solid #fa709a; }
+
+        footer {
+            margin-top: 6rem;
+            text-align: center;
+        }
+
+        .links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .links a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 0.875rem;
+            letter-spacing: 0.1em;
+            padding: 0.75rem 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            transition: all 0.3s;
+        }
+
+        .links a:hover {
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-3px);
+        }
+
+        /* Floating elements */
+        .floater {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(79, 172, 254, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .floater-1 {
+            top: 10%;
+            right: 5%;
+            animation: float1 15s ease-in-out infinite;
+        }
+
+        .floater-2 {
+            bottom: 10%;
+            left: 5%;
+            background: radial-gradient(circle, rgba(245, 87, 108, 0.1) 0%, transparent 70%);
+            animation: float2 20s ease-in-out infinite;
+        }
+
+        @keyframes float1 {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-30px, 30px); }
+        }
+
+        @keyframes float2 {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(30px, -30px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="floater floater-1"></div>
+    <div class="floater floater-2"></div>
+
+    <div class="container">
+        <header>
+            <h1 class="name">Umut Topuzoğlu</h1>
+            <p class="title">Software Engineer & Visual Artist — Munich</p>
+        </header>
+
+        <div class="cards-grid">
+            <div class="card card-engineer">
+                <span class="card-icon">⚡</span>
+                <h3>Frontend Engineering</h3>
+                <p>10+ years building interactive web experiences with modern JavaScript frameworks. Clean code, functional programming, user-centered development.</p>
+                <div class="card-tags">
+                    <span class="tag">React</span>
+                    <span class="tag">TypeScript</span>
+                    <span class="tag">Next.js</span>
+                </div>
+            </div>
+
+            <div class="card card-mobile">
+                <span class="card-icon">📱</span>
+                <h3>Mobile Development</h3>
+                <p>Cross-platform mobile apps with React Native and Expo. From offline-first architectures to smooth animations and native performance.</p>
+                <div class="card-tags">
+                    <span class="tag">React Native</span>
+                    <span class="tag">Expo</span>
+                    <span class="tag">iOS/Android</span>
+                </div>
+            </div>
+
+            <div class="card card-ux">
+                <span class="card-icon">✨</span>
+                <h3>UI/UX Design</h3>
+                <p>Bridging the gap between design and development. User experience at the center, not as an afterthought. Figma to code.</p>
+                <div class="card-tags">
+                    <span class="tag">Figma</span>
+                    <span class="tag">Animation</span>
+                    <span class="tag">Interaction</span>
+                </div>
+            </div>
+
+            <div class="card card-art">
+                <span class="card-icon">🎨</span>
+                <h3>Schiefewelt</h3>
+                <p>Visual art practice exploring tilted perspectives on reality. Paintings and murals that transform space and challenge perception.</p>
+                <div class="card-tags">
+                    <span class="tag">Paintings</span>
+                    <span class="tag">Murals</span>
+                    <span class="tag">Canvas</span>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <nav class="links">
+                <a href="https://github.com/uloco" target="_blank">GitHub</a>
+                <a href="https://linkedin.com/in/umut-topuzoğlu-515a95116" target="_blank">LinkedIn</a>
+                <a href="https://instagram.com/schiefewelt" target="_blank">Instagram</a>
+                <a href="mailto:hello@topuzoglu.de">Contact</a>
+            </nav>
+        </footer>
+    </div>
+
+    <script>
+        // 3D card tilt effect
+        const cards = document.querySelectorAll('.card');
+
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(30px)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+            });
+        });
+    </script>
+</body>
+</html>
